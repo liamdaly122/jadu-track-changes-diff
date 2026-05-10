@@ -357,6 +357,22 @@ button.secondary:hover:not(:disabled) {
   background: var(--bg);
 }
 
+ins.word-add {
+  background: #c8e6c9;
+  color: #0d4f1c;
+  text-decoration: none;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+del.word-del {
+  background: #f9c8c5;
+  color: #5c0e0a;
+  text-decoration: line-through;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 .block.added {
   background: var(--added-bg);
   border-left-color: var(--added-border);

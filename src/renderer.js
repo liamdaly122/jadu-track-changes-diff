@@ -1,3 +1,9 @@
+import {
+  computeWordDiff,
+  renderForOldSide,
+  renderForNewSide,
+} from './word-diff.js';
+
 const LEEDS_FONTS_URL = 'https://use.typekit.net/xpd0xwa.css';
 const LEEDS_CSS_URL = 'https://jaducdn.leeds.ac.uk/uol-ds/1.0.20/css/style.css';
 
@@ -28,10 +34,24 @@ const IFRAME_BASE_STYLES = `
   }
   .block > :first-child { margin-top: 0 !important; }
   .block > :last-child { margin-bottom: 0 !important; }
+  ins.word-add {
+    background: #c8e6c9;
+    color: #0d4f1c;
+    text-decoration: none;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  del.word-del {
+    background: #f9c8c5;
+    color: #5c0e0a;
+    text-decoration: line-through;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
 `;
 
 export function renderPanes(els, diff, options) {
-  const opts = { highlight: true, rendered: true, ...options };
+  const opts = { highlight: true, rendered: true, wordDiff: false, ...options };
   renderEntries(els.oldPane, 'old', diff.oldEntries, opts);
   renderEntries(els.newPane, 'new', diff.newEntries, opts);
 }
@@ -70,17 +90,14 @@ function renderEntries(paneEl, paneId, entries, options) {
     paneEl.appendChild(buildIframe(paneId, entries, options));
   } else {
     for (const entry of entries) {
-      paneEl.appendChild(renderPlainBlock(entry, options));
+      paneEl.appendChild(renderPlainBlock(entry, paneId, options));
     }
   }
 }
 
 function buildIframe(paneId, entries, options) {
   const blocksHtml = entries
-    .map((e) => {
-      const cls = options.highlight ? `block ${e.type}` : 'block';
-      return `<div class="${cls}">${e.block.html}</div>`;
-    })
+    .map((e) => blockToIframeHtml(e, paneId, options))
     .join('\n');
 
   const srcdoc = `<!doctype html>
@@ -114,6 +131,14 @@ ${blocksHtml}
   return iframe;
 }
 
+function blockToIframeHtml(entry, paneId, options) {
+  const cls = options.highlight ? `block ${entry.type}` : 'block';
+  const inner = shouldUseWordDiff(entry, options)
+    ? `<p class="block-text">${wordDiffHtml(entry, paneId)}</p>`
+    : entry.block.html;
+  return `<div class="${cls}">${inner}</div>`;
+}
+
 function attachAutoResize(iframe) {
   let doc;
   try {
@@ -136,12 +161,33 @@ function attachAutoResize(iframe) {
   } catch {}
 }
 
-function renderPlainBlock(entry, options) {
+function renderPlainBlock(entry, paneId, options) {
   const wrapper = document.createElement('div');
   wrapper.className = options.highlight ? `block ${entry.type}` : 'block';
   const text = document.createElement('p');
   text.className = 'block-text';
-  text.textContent = entry.block.text || '(empty block)';
+
+  if (shouldUseWordDiff(entry, options)) {
+    text.innerHTML = wordDiffHtml(entry, paneId);
+  } else {
+    text.textContent = entry.block.text || '(empty block)';
+  }
   wrapper.appendChild(text);
   return wrapper;
+}
+
+function shouldUseWordDiff(entry, options) {
+  return (
+    options.wordDiff &&
+    options.highlight &&
+    entry.type === 'modified' &&
+    !!entry.match
+  );
+}
+
+function wordDiffHtml(entry, paneId) {
+  const oldText = paneId === 'old' ? entry.block.text : entry.match.text;
+  const newText = paneId === 'old' ? entry.match.text : entry.block.text;
+  const ops = computeWordDiff(oldText, newText);
+  return paneId === 'old' ? renderForOldSide(ops) : renderForNewSide(ops);
 }

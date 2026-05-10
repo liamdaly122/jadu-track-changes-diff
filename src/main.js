@@ -15,6 +15,7 @@ const els = {
   saveBtn: document.getElementById('save-btn'),
   highlightToggle: document.getElementById('highlight-toggle'),
   renderedToggle: document.getElementById('rendered-toggle'),
+  wordDiffToggle: document.getElementById('word-diff-toggle'),
   metadata: document.querySelector('.metadata'),
   oldTitle: document.getElementById('old-title'),
   newTitle: document.getElementById('new-title'),
@@ -75,6 +76,7 @@ els.saveBtn.addEventListener('click', () => {
 
 els.highlightToggle.addEventListener('change', rerenderPanes);
 els.renderedToggle.addEventListener('change', rerenderPanes);
+els.wordDiffToggle.addEventListener('change', rerenderPanes);
 
 function runCompare(raw) {
   if (!raw.trim()) {
@@ -103,6 +105,7 @@ function rerenderPanes() {
   renderPanes(paneEls, currentDiff, {
     highlight: els.highlightToggle.checked,
     rendered: els.renderedToggle.checked,
+    wordDiff: els.wordDiffToggle.checked,
   });
 }
 

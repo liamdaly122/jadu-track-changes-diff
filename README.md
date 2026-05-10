@@ -17,6 +17,7 @@ Everything runs in your browser. The HTML you paste never leaves your machine.
 5. Toggles:
    - **Highlight differences** — turn off to read the content without colour highlighting
    - **Show rendered HTML** — when on, each pane is an iframe styled with the public Leeds design-system CSS so the content looks close to the published page. Requires internet access to fetch the Leeds stylesheets from `jaducdn.leeds.ac.uk` and the typekit fonts. The HTML you paste still stays on your machine — only the stylesheets are downloaded. Turn off for a no-network plain-text view.
+   - **Show word-level changes in modified paragraphs** — off by default. When on, modified paragraphs are shown as plain text with green-highlighted added words and red strikethrough removed words. Useful for spotting small edits in long paragraphs. While this is on, modified blocks lose their original formatting (links, bold, etc.) — turn it off to get formatting back. Added/removed/unchanged blocks are unaffected.
 6. Click **Save this comparison** to keep it in browser local storage. Saved comparisons appear in the sidebar (newest first, capped at 20). Click one to reload it; click the × to delete.
 
 ## Run locally
