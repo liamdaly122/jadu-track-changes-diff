@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadu Track Changes Diff</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h2>Saved comparisons</h2>
+        <p class="sidebar-empty">No saved comparisons yet.</p>
+        <ul class="saved-list" hidden></ul>
+      </aside>
+
+      <main class="main">
+        <header class="header">
+          <h1>Jadu Track Changes Diff</h1>
+          <p class="subtitle">
+            Paste the raw HTML of a Jadu Track Changes page and get a clean
+            side-by-side comparison.
+          </p>
+        </header>
+
+        <section class="input-area">
+          <label for="html-input" class="visually-hidden">
+            Paste Jadu Track Changes HTML
+          </label>
+          <textarea
+            id="html-input"
+            placeholder="Paste the raw HTML of a Jadu Track Changes page here..."
+            spellcheck="false"
+          ></textarea>
+          <div class="input-actions">
+            <button id="compare-btn" class="primary">Compare</button>
+            <button id="load-sample-btn" class="secondary">Load sample</button>
+            <button id="clear-btn" class="secondary">Clear</button>
+            <button id="save-btn" class="secondary" disabled>
+              Save this comparison
+            </button>
+          </div>
+        </section>
+
+        <section class="toggles">
+          <label class="toggle">
+            <input type="checkbox" id="highlight-toggle" checked />
+            <span>Highlight differences</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="rendered-toggle" checked />
+            <span>Show rendered HTML (off = plain text)</span>
+          </label>
+        </section>
+
+        <section class="metadata" hidden>
+          <div class="metadata-row">
+            <div class="metadata-item">
+              <span class="metadata-label">Old title</span>
+              <span class="metadata-value" id="old-title">&mdash;</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">New title</span>
+              <span class="metadata-value" id="new-title">&mdash;</span>
+            </div>
+          </div>
+          <div class="metadata-row">
+            <div class="metadata-item">
+              <span class="metadata-label">Old image</span>
+              <span class="metadata-value" id="old-image">&mdash;</span>
+            </div>
+            <div class="metadata-item">
+              <span class="metadata-label">New image</span>
+              <span class="metadata-value" id="new-image">&mdash;</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="status" hidden id="status">
+          <span id="status-text">0 added, 0 removed, 0 modified</span>
+        </section>
+
+        <section class="panes">
+          <article class="pane pane-old">
+            <h2 class="pane-title">Old version</h2>
+            <div class="pane-content" id="pane-old">
+              <p class="pane-empty">Paste HTML and click Compare.</p>
+            </div>
+          </article>
+          <article class="pane pane-new">
+            <h2 class="pane-title">New version</h2>
+            <div class="pane-content" id="pane-new">
+              <p class="pane-empty">Paste HTML and click Compare.</p>
+            </div>
+          </article>
+        </section>
+
+        <footer class="legend">
+          <h3>Legend</h3>
+          <ul class="legend-list">
+            <li><span class="swatch added"></span> Added</li>
+            <li><span class="swatch removed"></span> Removed</li>
+            <li><span class="swatch modified"></span> Modified</li>
+            <li><span class="swatch unchanged"></span> Unchanged</li>
+          </ul>
+        </footer>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

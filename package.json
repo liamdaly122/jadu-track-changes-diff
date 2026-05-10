@@ -1,0 +1,21 @@
+{
+  "name": "jadu-track-changes-diff",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Static browser-only tool for comparing old and new versions of Jadu CMS Track Changes pages.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^4.1.5",
+    "jsdom": "^29.1.1",
+    "vite": "^8.0.11",
+    "vitest": "^4.1.5"
+  }
+}
