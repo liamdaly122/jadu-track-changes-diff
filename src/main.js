@@ -8,77 +8,9 @@ import {
   deleteComparison,
 } from './storage.js';
 
-const SAMPLE_HTML = `<table><tr>
-  <td class="track-changes-diff track-changes-diff--old">
-    <table>
-      <tr>
-        <td class="generic_desc"><p>Page No.</p></td>
-        <td class="generic_action">1</td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Image</p></td>
-        <td class="generic_action">
-          <img name="imageURL" src="https://example.com/old-image.jpg" class="img_preview" alt="Selected Image">
-        </td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Title</p></td>
-        <td class="generic_action">Welcome to the Department of Examples</td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Description</p></td>
-        <td class="generic_action">
-          <p>The department offers <span class="diffRemoved">a wide range of </span>undergraduate courses in example studies.</p>
-          <h2>Our research</h2>
-          <p>Our research focuses on theoretical frameworks.</p>
-          <div class="uol-in-text-ctas-wrapper">
-            <div class="uol-in-text-cta">
-              <p class="uol-in-text-cta__heading"><a class="uol-in-text-cta__link" href="https://example.com/old-cta">Apply now for the 2024 intake</a></p>
-              <p class="uol-in-text-cta__text">Visit the application page to begin your journey.</p>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </td>
-  <td class="track-changes-diff">
-    <table>
-      <tr>
-        <td class="generic_desc"><p>Page No.</p></td>
-        <td class="generic_action">1</td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Image</p></td>
-        <td class="generic_action">
-          <img name="imageURL" src="https://example.com/new-image.jpg" class="img_preview" alt="Selected Image">
-        </td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Title</p></td>
-        <td class="generic_action">Welcome to the Department of Examples (Updated)</td>
-      </tr>
-      <tr>
-        <td class="generic_desc"><p>Description</p></td>
-        <td class="generic_action">
-          <p>The department offers undergraduate courses in example studies<span class="diffAdded">, with a strong emphasis on practical application</span>.</p>
-          <h2>Our research</h2>
-          <p>Our research focuses on theoretical frameworks.</p>
-          <div class="uol-in-text-ctas-wrapper">
-            <div class="uol-in-text-cta">
-              <p class="uol-in-text-cta__heading"><a class="uol-in-text-cta__link" href="https://example.com/new-cta">Browse our open days to find out more</a></p>
-              <p class="uol-in-text-cta__text">Find out about our programmes by visiting on an open day.</p>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </td>
-</tr></table>`;
-
 const els = {
   htmlInput: document.getElementById('html-input'),
   compareBtn: document.getElementById('compare-btn'),
-  loadSampleBtn: document.getElementById('load-sample-btn'),
   clearBtn: document.getElementById('clear-btn'),
   saveBtn: document.getElementById('save-btn'),
   highlightToggle: document.getElementById('highlight-toggle'),
@@ -120,12 +52,9 @@ let currentTitle = '';
 
 renderSavedList();
 
-els.loadSampleBtn.addEventListener('click', () => {
-  els.htmlInput.value = SAMPLE_HTML;
-});
-
 els.clearBtn.addEventListener('click', () => {
   els.htmlInput.value = '';
+  resetComparisonView();
   els.htmlInput.focus();
 });
 
@@ -258,12 +187,21 @@ function formatDate(iso) {
   return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
 }
 
-function showError(message) {
+function resetComparisonView() {
   currentDiff = null;
   currentRawHtml = null;
   currentTitle = '';
   els.saveBtn.disabled = true;
   els.metadata.hidden = true;
+  els.status.hidden = true;
+  els.paneOld.innerHTML =
+    '<p class="pane-empty">Paste HTML and click Compare.</p>';
+  els.paneNew.innerHTML =
+    '<p class="pane-empty">Paste HTML and click Compare.</p>';
+}
+
+function showError(message) {
+  resetComparisonView();
   els.paneOld.innerHTML = `<p class="pane-error"></p>`;
   els.paneNew.innerHTML = `<p class="pane-error"></p>`;
   els.paneOld.querySelector('.pane-error').textContent = message;
