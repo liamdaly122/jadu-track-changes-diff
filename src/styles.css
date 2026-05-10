@@ -182,6 +182,27 @@ textarea#html-input:focus {
   flex-wrap: wrap;
 }
 
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  margin: 0 -48px 24px;
+  padding: 16px 48px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sticky-bar .input-actions {
+  margin-top: 0;
+}
+
+.sticky-bar .toggles {
+  margin-bottom: 0;
+}
+
 button {
   font: inherit;
   padding: 8px 16px;
@@ -479,5 +500,9 @@ del.word-del {
   }
   .metadata-row {
     grid-template-columns: 1fr;
+  }
+  .sticky-bar {
+    margin: 0 -20px 20px;
+    padding: 12px 20px;
   }
 }

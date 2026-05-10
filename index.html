@@ -33,6 +33,9 @@
             placeholder="Paste the raw HTML of a Jadu Track Changes page here..."
             spellcheck="false"
           ></textarea>
+        </section>
+
+        <div class="sticky-bar">
           <div class="input-actions">
             <button id="compare-btn" class="primary">Compare</button>
             <button id="clear-btn" class="secondary">Clear</button>
@@ -40,22 +43,21 @@
               Save this comparison
             </button>
           </div>
-        </section>
-
-        <section class="toggles">
-          <label class="toggle">
-            <input type="checkbox" id="highlight-toggle" checked />
-            <span>Highlight differences</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="rendered-toggle" checked />
-            <span>Show rendered HTML (off = plain text)</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="word-diff-toggle" />
-            <span title="Inside modified paragraphs, highlight which specific words changed. Modified blocks lose their original formatting while this is on.">Show word-level changes in modified paragraphs</span>
-          </label>
-        </section>
+          <div class="toggles">
+            <label class="toggle">
+              <input type="checkbox" id="highlight-toggle" checked />
+              <span>Highlight differences</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="rendered-toggle" checked />
+              <span>Show rendered HTML (off = plain text)</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="word-diff-toggle" />
+              <span title="Inside modified paragraphs, highlight which specific words changed. Modified blocks lose their original formatting while this is on.">Show word-level changes in modified paragraphs</span>
+            </label>
+          </div>
+        </div>
 
         <section class="metadata" hidden>
           <div class="metadata-row">
