@@ -110,8 +110,54 @@
             <li><span class="swatch unchanged"></span> Unchanged</li>
           </ul>
         </footer>
+
+        <footer class="app-footer">
+          <button id="install-bookmarklet-btn" type="button" class="link-btn">
+            Install bookmarklet
+          </button>
+        </footer>
       </main>
     </div>
+
+    <dialog id="bookmarklet-modal" class="modal">
+      <div class="modal-content">
+        <h2>Install the Jadu bookmarklet</h2>
+        <p>
+          One click on any Jadu Track Changes page opens this tool in a new tab
+          with the page already compared. Saves you copying and pasting the
+          source HTML each time.
+        </p>
+
+        <h3>Install (once)</h3>
+        <ol>
+          <li>
+            Show your browser's bookmarks bar
+            (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on Mac,
+            <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> on Windows).
+          </li>
+          <li>Drag the blue button below up onto your bookmarks bar.</li>
+        </ol>
+
+        <p class="bookmarklet-link-row">
+          <a id="bookmarklet-link" class="bookmarklet-link" href="#"
+            >Open in Jadu Diff</a
+          >
+        </p>
+
+        <h3>Use it</h3>
+        <ol>
+          <li>Open any Track Changes page in Jadu.</li>
+          <li>Click the "Open in Jadu Diff" bookmark.</li>
+          <li>This tool opens in a new tab with the page already compared.</li>
+        </ol>
+
+        <div class="modal-actions">
+          <button type="button" id="bookmarklet-modal-close" class="primary">
+            Close
+          </button>
+        </div>
+      </div>
+    </dialog>
 
     <script type="module" src="/src/main.js"></script>
   </body>

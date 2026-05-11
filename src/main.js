@@ -27,6 +27,10 @@ const els = {
   paneNew: document.getElementById('pane-new'),
   sidebarEmpty: document.querySelector('.sidebar-empty'),
   savedList: document.querySelector('.saved-list'),
+  installBookmarkletBtn: document.getElementById('install-bookmarklet-btn'),
+  bookmarkletModal: document.getElementById('bookmarklet-modal'),
+  bookmarkletLink: document.getElementById('bookmarklet-link'),
+  bookmarkletModalClose: document.getElementById('bookmarklet-modal-close'),
 };
 
 const metadataEls = {
@@ -52,6 +56,20 @@ let currentRawHtml = null;
 let currentTitle = '';
 
 renderSavedList();
+els.bookmarkletLink.href = buildBookmarkletHref();
+maybeReceiveFromBookmarklet();
+
+els.installBookmarkletBtn.addEventListener('click', () => {
+  els.bookmarkletModal.showModal();
+});
+
+els.bookmarkletModalClose.addEventListener('click', () => {
+  els.bookmarkletModal.close();
+});
+
+els.bookmarkletModal.addEventListener('click', (e) => {
+  if (e.target === els.bookmarkletModal) els.bookmarkletModal.close();
+});
 
 els.clearBtn.addEventListener('click', () => {
   els.htmlInput.value = '';
@@ -201,6 +219,47 @@ function resetComparisonView() {
     '<p class="pane-empty">Paste HTML and click Compare.</p>';
   els.paneNew.innerHTML =
     '<p class="pane-empty">Paste HTML and click Compare.</p>';
+}
+
+function buildBookmarkletHref() {
+  const targetUrl = `${location.origin}${location.pathname}?from-bookmarklet=1`;
+  const targetOrigin = location.origin;
+  const code =
+    `(function(){` +
+    `var html=document.documentElement.outerHTML;` +
+    `var w=window.open(${JSON.stringify(targetUrl)},'_blank');` +
+    `if(!w){alert('Pop-up blocked. Allow pop-ups from this page and try again.');return;}` +
+    `window.addEventListener('message',function(e){` +
+    `if(e.source===w&&e.data&&e.data.type==='jadu-diff-ready'){` +
+    `w.postMessage({type:'jadu-diff-payload',html:html},${JSON.stringify(targetOrigin)});` +
+    `}});` +
+    `})();`;
+  return 'javascript:' + code;
+}
+
+function maybeReceiveFromBookmarklet() {
+  const params = new URLSearchParams(location.search);
+  if (!params.has('from-bookmarklet') || !window.opener) return;
+
+  let received = false;
+  const pingInterval = setInterval(() => {
+    try {
+      window.opener.postMessage({ type: 'jadu-diff-ready' }, '*');
+    } catch {}
+  }, 100);
+  const stopAfter = setTimeout(() => clearInterval(pingInterval), 10000);
+
+  window.addEventListener('message', (e) => {
+    if (received) return;
+    if (!e.data || e.data.type !== 'jadu-diff-payload') return;
+    if (typeof e.data.html !== 'string') return;
+    received = true;
+    clearInterval(pingInterval);
+    clearTimeout(stopAfter);
+    els.htmlInput.value = e.data.html;
+    runCompare(e.data.html);
+    history.replaceState({}, '', location.pathname);
+  });
 }
 
 function showError(message) {

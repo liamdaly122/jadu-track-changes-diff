@@ -9,6 +9,10 @@ Everything runs in your browser. The HTML you paste never leaves your machine.
 1. Open the app in your browser (`npm run dev` then visit the printed URL).
 2. In Jadu, view a Track Changes page. Right-click → "View Page Source" (or press Ctrl/Cmd+U), select all, copy.
 3. Paste into the textarea and click **Compare**.
+
+### One-click via bookmarklet
+
+There's a small **Install bookmarklet** link at the bottom of the app. Click it, follow the two-step install, and from then on you can launch the diff tool directly from any Jadu Track Changes page with one click — no copy-paste.
 4. The two panes show old (left) and new (right) with each paragraph colour-coded:
    - Green: added (new only)
    - Red: removed (old only)
