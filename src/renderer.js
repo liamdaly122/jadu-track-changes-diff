@@ -3,6 +3,11 @@ import {
   renderForOldSide,
   renderForNewSide,
 } from './word-diff.js';
+import {
+  htmlWordDiff,
+  renderForOldSide as renderHtmlForOldSide,
+  renderForNewSide as renderHtmlForNewSide,
+} from './html-word-diff.js';
 
 const LEEDS_FONTS_URL = 'https://use.typekit.net/xpd0xwa.css';
 const LEEDS_CSS_URL = 'https://jaducdn.leeds.ac.uk/uol-ds/1.0.20/css/style.css';
@@ -133,10 +138,28 @@ ${blocksHtml}
 
 function blockToIframeHtml(entry, paneId, options) {
   const cls = options.highlight ? `block ${entry.type}` : 'block';
-  const inner = shouldUseWordDiff(entry, options)
-    ? `<p class="block-text">${wordDiffHtml(entry, paneId)}</p>`
-    : entry.block.html;
+  let inner;
+  if (shouldUseWordDiff(entry, options)) {
+    const htmlOut = htmlWordDiffForEntry(entry, paneId);
+    if (htmlOut !== null) {
+      inner = htmlOut;
+    } else {
+      inner = `<p class="block-text">${wordDiffHtml(entry, paneId)}</p>`;
+    }
+  } else {
+    inner = entry.block.html;
+  }
   return `<div class="${cls}">${inner}</div>`;
+}
+
+function htmlWordDiffForEntry(entry, paneId) {
+  const oldHtml = paneId === 'old' ? entry.block.html : entry.match.html;
+  const newHtml = paneId === 'old' ? entry.match.html : entry.block.html;
+  const result = htmlWordDiff(oldHtml, newHtml);
+  if (!result) return null;
+  return paneId === 'old'
+    ? renderHtmlForOldSide(result.oldAnnotated)
+    : renderHtmlForNewSide(result.newAnnotated);
 }
 
 function attachAutoResize(iframe) {
